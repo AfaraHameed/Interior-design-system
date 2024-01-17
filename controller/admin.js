@@ -20,8 +20,8 @@ const createUserByAdmin = asyncHandler(async(req, res) => {
     email,
     phone,
     place,
-    district)
-    return res.status(201).json({addUser})
+    district)    
+    return res.status(201).json({success:true,message:addUser})
 });
 
 const addProject = (req, res) => {};

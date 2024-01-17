@@ -22,12 +22,12 @@ sequelize
   .authenticate()
   .then(() => {
     sequelize
-      .sync()
+      .sync({force:true})
       .then((data) => {
         console.log("model synced", data);
       })
       .catch((err) => {
-        console.log("Error syncing the database!");
+        console.error('Error syncing the database:', err);
       });
     console.log("connected to db");
   })

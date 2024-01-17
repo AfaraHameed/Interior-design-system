@@ -1,7 +1,8 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/orm");
+const { Client } = require("./client");
 const User = sequelize.define("user", {
-  id: {
+  userid: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
@@ -10,7 +11,6 @@ const User = sequelize.define("user", {
   },
   username: {
     type: DataTypes.STRING,
-    unique: true,
     allowNull: false,
     validate: {
       notEmpty: { msg: "enter username" },
@@ -54,7 +54,6 @@ const User = sequelize.define("user", {
   },
   email: {
     type: DataTypes.STRING,
-    unique: true,
     validate: {
       isEmail: {
         msg: "Invalid email address",
@@ -80,6 +79,8 @@ const User = sequelize.define("user", {
     field: "District",
   },
 });
+User.hasOne(Client, { foreignKey: 'userId', as: 'user' });
+Client.belongsTo(User,{foreignKey:'userId' , as:'user'})
 module.exports = {
   User,
 };
