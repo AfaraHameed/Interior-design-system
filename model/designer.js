@@ -12,8 +12,12 @@ const Designer = sequelize.define("designer", {
   },
 
 });
+const DesignerProject = sequelize.define("designerProject", {
+  selfGranted: DataTypes.BOOLEAN
+}, { timestamps: false });
 Project.belongsToMany(Designer, { through: 'DesignerProject' });
 Designer.belongsToMany(Project, { through: 'DesignerProject' });
 module.exports = {
   Designer,
+  DesignerProject 
 };

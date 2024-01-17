@@ -9,6 +9,7 @@ const User = require('./model/user');
 const Project = require('./model/project');
 const Client = require('./model/client')
 const Designer=require('./model/designer')
+// const DesignerProject=require('./model/designer')
 
 
 const errorHandler = require("./middlewares/errorHandler");

@@ -63,12 +63,14 @@ const addProject = asyncHandler(async (req, res, next) => {
   return res.status(201).json({ success: true, data: { message: project } });
 });
 const getProjects = (req, res) => {};
-const assignDesigner=asyncHandler(async(req,res)=>{
-
+const assignDesignerToProject=asyncHandler(async(req,res)=>{
+  const{project_id,designer_id}=req.body
+  const result=await adminRepository.assignDesignerToProject(project_id,designer_id)
+  res.status(201).json({success:true,data:{message:result}})
 })
 
 module.exports = {
   createUserByAdmin,
   addProject,
-  assignDesigner
+  assignDesignerToProject
 };
