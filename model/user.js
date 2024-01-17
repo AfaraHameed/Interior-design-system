@@ -1,6 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/orm");
 const { Client } = require("./client");
+const { Designer } = require("./designer");
 const User = sequelize.define("user", {
   userid: {
     type: DataTypes.INTEGER,
@@ -79,8 +80,10 @@ const User = sequelize.define("user", {
     field: "District",
   },
 });
-User.hasOne(Client, { foreignKey: 'userId', as: 'user' });
-Client.belongsTo(User,{foreignKey:'userId' , as:'user'})
+User.hasOne(Client, { foreignKey: 'userId' });
+Client.belongsTo(User,{foreignKey:'userId' })
+User.hasOne(Designer, { foreignKey: 'userId' });
+Designer.belongsTo(User,{foreignKey:'userId' })
 module.exports = {
   User,
 };

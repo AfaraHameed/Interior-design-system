@@ -1,5 +1,6 @@
 const { User } = require("../model/user");
-const {hashPassword} = require("../util/passwordHelper")
+const {Project} = require("../model/project")
+const { hashPassword } = require("../util/passwordHelper");
 const createUserByAdmin = (
   username,
   plainpassword,
@@ -12,7 +13,7 @@ const createUserByAdmin = (
   district
 ) => {
   return new Promise((resolve, reject) => {
-    const password = hashPassword(plainpassword)
+    const password = hashPassword(plainpassword);
     User.create({
       username,
       password,
@@ -23,11 +24,54 @@ const createUserByAdmin = (
       phone,
       place,
       district,
-    }).then((data)=>{
-        resolve(data);
-    }).catch((err)=>{
-        reject(err)
     })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
 };
-module.exports = {createUserByAdmin};
+const addProject = (
+  projectName,
+  status,
+  description,
+  budget,
+  startdate,
+  endDateExpected,
+  inspirationalImg,
+  additionalDoc,
+  clientId
+) => {
+  console.log( projectName,
+    status,
+    description,
+    budget,
+    startdate,
+    endDateExpected,
+    inspirationalImg,
+    additionalDoc,
+    clientId);
+  return new Promise((resolve, reject) => {
+    Project.create({
+      projectName,
+      status,
+      description,
+      budget,
+      startdate,
+      endDateExpected,
+      inspirationalImg,
+      additionalDoc,
+      clientId
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        resolve(err);
+      });
+  });
+};
+module.exports = { createUserByAdmin, addProject };

@@ -9,7 +9,7 @@ const Project = sequelize.define("project", {
         unique: true,
         fields: "id",
       },
-      ProjectName:{
+      projectName:{
         type:DataTypes.STRING,
         allowNull:false,
         validate:{
@@ -23,7 +23,7 @@ const Project = sequelize.define("project", {
       description:{
         type:DataTypes.TEXT,
       },
-      Budget:{
+      budget:{
         type:DataTypes.DECIMAL(10,2),
         allowNull:false
       },
@@ -36,8 +36,13 @@ const Project = sequelize.define("project", {
     inspirationalImg:{
         type:DataTypes.STRING
     },
-    AdditionalDoc:{
+    additionalDoc:{
         type:DataTypes.STRING
+    },
+    clientId: {
+      type: DataTypes.INTEGER,
+      // other attributes for userId
+      field: 'clientId', // specify the column name explicitly
     },
 });
 
