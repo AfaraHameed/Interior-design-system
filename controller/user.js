@@ -11,8 +11,7 @@ const login = asyncHandler(async (req, res) => {
   } else {
     const isMatching = compareWithPassword(password, user.password);
     if (isMatching) {
-      req.session.userId = user.id;
-      const token = createJwt(user.id);
+      const token = createJwt(user.userid);
       res.status(201).json({ message: "Login Successfully", data: user,token:token });
     }
   }

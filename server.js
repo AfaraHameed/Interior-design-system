@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const adminRouter = require("./routes/admin");
 const userRouter = require("./routes/user");
+const designerRouter=require("./routes/designer")
 const sequelize = require("./config/orm");
 const session = require("express-session");
 // const { sequelize } = require('../config/orm');
@@ -9,10 +10,12 @@ const User = require('./model/user');
 const Project = require('./model/project');
 const Client = require('./model/client')
 const Designer=require('./model/designer')
+const Task = require('./model/task')
 // const DesignerProject=require('./model/designer')
 
 
 const errorHandler = require("./middlewares/errorHandler");
+const { verifyToken } = require("./util/jwtHelper");
 dotenv.config({ path: "./config/config.env" });
 const app = express();
 
@@ -26,6 +29,7 @@ app.use(
 );
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);
+app.use("/api/designer",designerRouter)
 
 // sequelize.sync()
 //   .then(() => {

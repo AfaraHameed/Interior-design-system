@@ -17,4 +17,14 @@ const getUserByUsername = (username) => {
       });
   });
 };
-module.exports = { getUserByUsername };
+const getAllUsers = ()=>{
+  return new Promise((resolve,reject)=>{
+    User.findAll()
+    .then((result)=>{
+      resolve(result);
+    }).catch((err)=>{
+      reject(err);
+    })
+  })
+}
+module.exports = { getUserByUsername , getAllUsers};

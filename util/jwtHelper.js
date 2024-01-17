@@ -7,6 +7,7 @@ function createJwt(userId) {
 
 function verifyToken(token) {
   //replace Bearer(one space too)
+  console.log(typeof token);
   const formattedToken = token.replace("Bearer ", "");
   console.log("formatted token", formattedToken);
   return new Promise((resolve, reject) => {

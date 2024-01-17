@@ -69,9 +69,9 @@ const addProject = (
 };
 const assignDesignerToProject = (project_id, designer_id) => {
   console.log(project_id, designer_id);
-  return new Promise(async(resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const project = await Project.findByPk(project_id);
-    const designer =await  Designer.findByPk(designer_id);
+    const designer = await Designer.findByPk(designer_id);
     console.log(project);
     console.log(designer);
     if (!project || !designer) {
@@ -80,9 +80,26 @@ const assignDesignerToProject = (project_id, designer_id) => {
       const created = project.addDesigner(designer, {
         through: { selfGranted: false },
       });
-      const result = Project.findByPk(project_id,{include:Designer})
-      resolve(result)
+      const result = Project.findByPk(project_id, { include: Designer });
+      resolve(result);
     }
   });
 };
-module.exports = { createUserByAdmin, addProject, assignDesignerToProject };
+const getAllProjects = (projectId) => {
+  return new Promise((resolve,reject)=>{
+    Project.findAll({ })
+    .then((projects) => {
+      resolve(projects);
+    })
+    .catch((err) => {
+      reject(err);
+    });
+  })
+   
+};
+module.exports = {
+  createUserByAdmin,
+  addProject,
+  assignDesignerToProject,
+  getAllProjects,
+};
