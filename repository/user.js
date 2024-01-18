@@ -17,14 +17,25 @@ const getUserByUsername = (username) => {
       });
   });
 };
-const getAllUsers = ()=>{
-  return new Promise((resolve,reject)=>{
+const getAllUsers = () => {
+  return new Promise((resolve, reject) => {
     User.findAll()
-    .then((result)=>{
-      resolve(result);
-    }).catch((err)=>{
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+const updateProfile = (userid, newProfile) => {
+  return new Promise((resolve, reject) =>
+    User.update(newProfile, { where: { userid: userid }, returning: true }).then((data) => {
+      resolve(data[1]);
+    })
+    .catch((err) => {
       reject(err);
     })
-  })
-}
-module.exports = { getUserByUsername , getAllUsers};
+  ) 
+};
+module.exports = { getUserByUsername, getAllUsers, updateProfile };

@@ -1,14 +1,16 @@
 const asyncHandler = require("../middlewares/asyncHandler");
 const designerRepository = require("../repository/designer");
 const designerServices = require("../services/designer");
+const projectService = require("../services/project")
 const ErrorResponse = require("../util/errorResponse");
-const getAllProjects = asyncHandler(async (req, res) => {
+const getAllProjects = asyncHandler(async (req, res, next) => {
   const userId = req.userId;
   const designerid = await designerServices.getDesignerId(userId);
-  const projects = await designerRepository.getAllProjects(designerid);
+ const projects = await designerRepository.getAllProjects(designerid);
+
   res.status(200).json({ success: true, data: { message: projects } });
 });
-const addTask = asyncHandler(async (req, res) => {
+const addTask = asyncHandler(async (req, res, next) => {
   const { projectId, taskName, description, status, dueDate } = req.body;
   const task = await designerRepository.addTask(
     projectId,
@@ -25,7 +27,7 @@ const addTask = asyncHandler(async (req, res) => {
     next(new ErrorResponse("Failed to create task", 400));
   }
 });
-const getTasks = asyncHandler(async (req, res) => {
+const getTasks = asyncHandler(async (req, res, next) => {
   const projectId = req.params.projectId;
   const tasks = await designerRepository.getTasks(projectId);
   if (tasks.length > 0) {
@@ -36,4 +38,55 @@ const getTasks = asyncHandler(async (req, res) => {
     next(new ErrorResponse("No Tasks in this Project", 404));
   }
 });
-module.exports = { getAllProjects, addTask, getTasks };
+const updateTaskStatus = asyncHandler(async (req, res, next) => {
+  const projectId = req.params.projectId;
+  const taskId = req.params.taskId;
+  const statusToUpdate = req.body.status;
+  let updated = await designerRepository.updateTaskStatus(
+    statusToUpdate,
+    taskId,
+    projectId
+  );
+  if (updated) {
+    res.status(200).json({
+      success: true,
+      data: {
+        message: `task ${taskId}  of Project ${projectId} updated successfully`,
+      },
+      updated_task: updated,
+    });
+  } else next(new ErrorResponse("Failed to update", 404));
+});
+const updateProjectStatus = asyncHandler(async (req, res, next) => {
+  const projectId = req.params.id;
+  const status = req.body.status;
+  console.log(status);
+  const updated = await designerRepository.updateProjectStatus(
+    projectId,
+    status
+  );
+  if (updated) {
+    res.status(200).json({
+      success: true,
+      message: `Poject ${projectId} updated succesfully`,
+      updated_data: updated,
+    });
+  } else return next(new ErrorResponse("Unable to Update", 500));
+});
+const getProjectDetails = asyncHandler(async(req,res,next)=>{
+  const id = req.params.projectId
+  const details=await projectService.getProjectDetails(id)
+  if(details){
+    res.status(200).json({success:true,data:details})
+  }
+  else
+  next(new ErrorResponse('No Details Found',404))
+})
+module.exports = {
+  getAllProjects,
+  addTask,
+  getTasks,
+  updateTaskStatus,
+  updateProjectStatus,
+  getProjectDetails
+};

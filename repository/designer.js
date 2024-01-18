@@ -65,10 +65,39 @@ const getTasks = (projectId) => {
       });
   });
 };
+const updateTaskStatus = (statusToUpdate,taskId,projectId)=>{
+  console.log(statusToUpdate,taskId,projectId);
+  return new Promise (async(resolve,reject)=> {
+      await Task.update({status:statusToUpdate},{
+        where:{
+          taskId:taskId,
+          projectId:projectId
+        },returning:true
+      }).then((data)=>{
+        resolve(data[1])
+      }).catch((err)=>{
+        reject(err)
+      })
+  })
+}
+const updateProjectStatus = (projectId,status)=>{
+  return new Promise((resolve,reject)=>{
+    Project.update({status:status},{where:{id:projectId},returning:true}).then((data)=>{
+      console.log(data);
+      resolve(data[1])
+
+    }).catch((err)=>{
+      reject(err)
+    })
+  })
+ 
+}
 module.exports = {
   addDesigner,
   getAllProjects,
   getDesignerId,
   addTask,
   getTasks,
+  updateTaskStatus,
+  updateProjectStatus
 };

@@ -64,7 +64,7 @@ const addProject = asyncHandler(async (req, res, next) => {
 
   return res.status(201).json({ success: true, data: { message: project } });
 });
-const getProjects = asyncHandler(async(req, res) => {
+const getProjects = asyncHandler(async(req, res,next) => {
   const projects = await adminRepository.getAllProjects()
   if(projects){
     res.status(200).json({success:true,data:{message:projects}})
