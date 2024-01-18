@@ -14,4 +14,6 @@ const getProjectDetails = (projectid) => {
 const countProjects = ()=>{
     return Project.count();
 }
+
+//const addProject = (req,res)
 module.exports = {getProjectDetails,countProjects}

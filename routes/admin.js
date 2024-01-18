@@ -9,4 +9,5 @@ router.route('/project',).post(adminController.addProject).get(adminController.g
 router.post('/project/assign_designer',[verifyTokenHandler],adminController.assignDesignerToProject)
 router.get('/user',[verifyTokenHandler],adminController.getAllUsers)
 router.get('/dashboard',[verifyTokenHandler],adminController.getAdminDashboardDetails)
+router.post('/faq',[verifyTokenHandler],adminController.addFAQ)
 module.exports=router

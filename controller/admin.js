@@ -5,6 +5,7 @@ const clientService = require("../services/client");
 const designService = require("../services/designer");
 const projectService = require("../services/project")
 const userService = require("../services/user")
+const FAQService = require("../services/FAQ")
 const ErrorResponse = require("../util/errorResponse");
 const createUserByAdmin = asyncHandler(async (req, res, next) => {
   const {
@@ -111,6 +112,12 @@ const deletUserAccount = asyncHandler(async(req,res,next)=>{
   const deleted = await userService.deletUserAccount(userId)
     res.status(200).json({success:true,data:{message:`user ${userId} deleted successfully`}})
 })
+
+const addFAQ = asyncHandler(async(req,res)=>{
+  const  {question,answer}= req.body
+  const faq = await FAQService.addFAQ(question, answer)
+  res.status(201).json({success:true,data:faq})
+})
 module.exports = {
   createUserByAdmin,
   addProject,
@@ -118,5 +125,6 @@ module.exports = {
   getProjects,
   getAllUsers,
   getAdminDashboardDetails,
-  deletUserAccount
+  deletUserAccount,
+  addFAQ
 };
