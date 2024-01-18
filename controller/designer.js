@@ -2,6 +2,7 @@ const asyncHandler = require("../middlewares/asyncHandler");
 const designerRepository = require("../repository/designer");
 const designerServices = require("../services/designer");
 const projectService = require("../services/project");
+const FAQService = require("../services/FAQ")
 const ErrorResponse = require("../util/errorResponse");
 const getAllProjects = asyncHandler(async (req, res, next) => {
   const userId = req.userId;
@@ -80,6 +81,12 @@ const getProjectDetails = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, data: details });
   } else next(new ErrorResponse("No Details Found", 404));
 });
+
+const getFAQ =asyncHandler (async(req,res)=>{
+  const faqs = await FAQService.getFAQ()
+  if(faqs)
+  res.status(200).json({success:true,data:faqs})
+})
 module.exports = {
   getAllProjects,
   addTask,
@@ -87,4 +94,6 @@ module.exports = {
   updateTaskStatus,
   updateProjectStatus,
   getProjectDetails,
+  getFAQ
 };
+

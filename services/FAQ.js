@@ -3,4 +3,9 @@ const addFAQ = (question,answer)=>{
     const response = FAQRepository.addFAQ(question,answer )
     return response
 }
-module.exports = {addFAQ}
+
+const getFAQ = ()=>{
+    const response= FAQRepository.getFAQ()
+    return response
+}
+module.exports = {addFAQ,getFAQ}

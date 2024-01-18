@@ -8,4 +8,14 @@ const addFAQ = (question,answer)=>{
         })
     })
 }
-module.exports = {addFAQ}
+
+const getFAQ = ()=>{
+    return new Promise((resolve,reject)=>{
+        FAQ.findAll().then((data)=>{
+            resolve(data)
+        }).catch((err)=>{[
+            reject(err)
+        ]})
+    })
+}
+module.exports = {addFAQ,getFAQ}
