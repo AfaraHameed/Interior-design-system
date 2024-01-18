@@ -3,5 +3,7 @@ const router = express.Router();
 const designerController = require('../controller/designer')
 const {verifyTokenHandler} = require('../middlewares/jwtHandler')
 router.get('/projects',[verifyTokenHandler],designerController.getAllProjects)
-router.post('/task',[verifyTokenHandler],designerController.addTask)
+router.post('/projects/task',[verifyTokenHandler],designerController.addTask)
+router.get('/projects/:projectId/tasks',[verifyTokenHandler],designerController.getTasks)
+
 module.exports=router

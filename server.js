@@ -31,14 +31,7 @@ app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);
 app.use("/api/designer",designerRouter)
 
-// sequelize.sync()
-//   .then(() => {
-//     console.log('Models synchronized successfully');
-//     // Your application logic here
-//   })
-//   .catch((error) => {
-//     console.error('Error synchronizing models:', error);
-//   });
+
 const port = process.env.PORT || 9000;
 app.listen(port, () => {
   console.log(`running in ${process.env.NODE_ENV} on ${port}`);

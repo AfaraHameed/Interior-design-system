@@ -1,6 +1,6 @@
 const { Designer, DesignerProject } = require("../model/designer");
 const { Project } = require("../model/project");
-const {Task} = require('../model/task')
+const { Task } = require("../model/task");
 const addDesigner = (userid) => {
   return new Promise(async (resolve, reject) => {
     Designer.create({
@@ -42,20 +42,33 @@ const getDesignerId = (userId) => {
       });
   });
 };
-const addTask = (projectId,taskName,description,status,dueDate)=>{
-    console.log(projectId);
-    return new Promise((resolve,reject)=>{
-        Task.create({projectId,taskName,description,status,dueDate}).then((result)=>{
-            resolve(result);
-        }).catch((err)=>{
-            reject(err);
-        })
-    })
-}
-
+const addTask = (projectId, taskName, description, status, dueDate) => {
+  console.log(projectId);
+  return new Promise((resolve, reject) => {
+    Task.create({ projectId, taskName, description, status, dueDate })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+const getTasks = (projectId) => {
+  return new Promise((resolve, reject) => {
+    Task.findAll({ where: { projectId } })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
 module.exports = {
   addDesigner,
   getAllProjects,
   getDesignerId,
-  addTask
+  addTask,
+  getTasks,
 };
