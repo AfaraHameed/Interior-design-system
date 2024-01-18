@@ -16,6 +16,9 @@ const Task = sequelize.define("task", {
     type:DataTypes.STRING,
     allowNull:false,
   },
+  description:{
+    type:DataTypes.TEXT,
+  },
   status:{
     type:DataTypes.ENUM('To Do','Doing', 'Done'),
   },
