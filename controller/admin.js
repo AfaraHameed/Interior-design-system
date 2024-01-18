@@ -1,8 +1,10 @@
 const asyncHandler = require("../middlewares/asyncHandler");
 const adminRepository = require("../repository/admin");
-const userRepository = require("../repository/user")
+const userRepository = require("../repository/user") 
 const clientService = require("../services/client");
 const designService = require("../services/designer");
+const projectService = require("../services/project")
+const userService = require("../services/user")
 const ErrorResponse = require("../util/errorResponse");
 const createUserByAdmin = asyncHandler(async (req, res, next) => {
   const {
@@ -87,10 +89,34 @@ const getAllUsers=asyncHandler(async(req,res)=>{
   const users=await userRepository.getAllUsers();
   res.status(200).json({success:true,data:{message:users}})
 })
+
+const getAdminDashboardDetails = asyncHandler(async(req,res)=>{
+  const DesignersCount=await designService.countDesigners()
+  const ClientsCount = await clientService.countClients()
+  const ProjectsCount = await projectService.countProjects()
+  const DashBoardData={
+    Designers : DesignersCount,
+    Clients : ClientsCount,
+    Projects : ProjectsCount
+  }
+  res.status(200).json({success:true,data:DashBoardData})
+})
+const deletUserAccount = asyncHandler(async(req,res,next)=>{
+  const userId = req.params.id
+  const isExist = await userService.checkRecordExists(userId)
+  console.log(isExist);
+  if(!isExist){
+    return next(new ErrorResponse('The User does not exist',404))
+  }
+  const deleted = await userService.deletUserAccount(userId)
+    res.status(200).json({success:true,data:{message:`user ${userId} deleted successfully`}})
+})
 module.exports = {
   createUserByAdmin,
   addProject,
   assignDesignerToProject,
   getProjects,
-  getAllUsers
+  getAllUsers,
+  getAdminDashboardDetails,
+  deletUserAccount
 };

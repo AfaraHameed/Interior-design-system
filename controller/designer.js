@@ -1,12 +1,12 @@
 const asyncHandler = require("../middlewares/asyncHandler");
 const designerRepository = require("../repository/designer");
 const designerServices = require("../services/designer");
-const projectService = require("../services/project")
+const projectService = require("../services/project");
 const ErrorResponse = require("../util/errorResponse");
 const getAllProjects = asyncHandler(async (req, res, next) => {
   const userId = req.userId;
   const designerid = await designerServices.getDesignerId(userId);
- const projects = await designerRepository.getAllProjects(designerid);
+  const projects = await designerRepository.getAllProjects(designerid);
 
   res.status(200).json({ success: true, data: { message: projects } });
 });
@@ -73,20 +73,18 @@ const updateProjectStatus = asyncHandler(async (req, res, next) => {
     });
   } else return next(new ErrorResponse("Unable to Update", 500));
 });
-const getProjectDetails = asyncHandler(async(req,res,next)=>{
-  const id = req.params.projectId
-  const details=await projectService.getProjectDetails(id)
-  if(details){
-    res.status(200).json({success:true,data:details})
-  }
-  else
-  next(new ErrorResponse('No Details Found',404))
-})
+const getProjectDetails = asyncHandler(async (req, res, next) => {
+  const id = req.params.projectId;
+  const details = await projectService.getProjectDetails(id);
+  if (details) {
+    res.status(200).json({ success: true, data: details });
+  } else next(new ErrorResponse("No Details Found", 404));
+});
 module.exports = {
   getAllProjects,
   addTask,
   getTasks,
   updateTaskStatus,
   updateProjectStatus,
-  getProjectDetails
+  getProjectDetails,
 };

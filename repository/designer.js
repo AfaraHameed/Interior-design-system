@@ -92,6 +92,9 @@ const updateProjectStatus = (projectId,status)=>{
   })
  
 }
+const countDesigners = ()=>{
+  return Designer.count()
+}
 module.exports = {
   addDesigner,
   getAllProjects,
@@ -99,5 +102,6 @@ module.exports = {
   addTask,
   getTasks,
   updateTaskStatus,
-  updateProjectStatus
+  updateProjectStatus,
+  countDesigners
 };

@@ -3,4 +3,8 @@ const addClient = (userid)=>{
     const response = clientRepository.addClient(userid)
     return response
 }
-module.exports={addClient}
+const countClients = ()=>{
+    const response=clientRepository.countClients()
+    return response
+}
+module.exports={addClient,countClients}

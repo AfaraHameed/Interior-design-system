@@ -3,4 +3,8 @@ const getProjectDetails = (projectid)=>{
     const response = projectRepository.getProjectDetails(projectid)
     return response
 }
-module.exports = {getProjectDetails}
+const countProjects = ()=>{
+    const response  = projectRepository.countProjects()
+    return response
+}
+module.exports = {getProjectDetails,countProjects}

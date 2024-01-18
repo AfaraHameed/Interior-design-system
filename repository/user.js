@@ -30,12 +30,42 @@ const getAllUsers = () => {
 };
 const updateProfile = (userid, newProfile) => {
   return new Promise((resolve, reject) =>
-    User.update(newProfile, { where: { userid: userid }, returning: true }).then((data) => {
-      resolve(data[1]);
-    })
-    .catch((err) => {
-      reject(err);
-    })
-  ) 
+    User.update(newProfile, { where: { userid: userid }, returning: true })
+      .then((data) => {
+        resolve(data[1]);
+      })
+      .catch((err) => {
+        reject(err);
+      })
+  );
 };
-module.exports = { getUserByUsername, getAllUsers, updateProfile };
+const deletUserAccount = (userid) => {
+  return new Promise((resolve, reject) => {
+    User.destroy({ where: { userid: userid } })
+      .then(() => {
+        resolve(true);
+      })
+      .catch((err) => {
+        reject("Error deleting account");
+      });
+  });
+};
+const checkRecordExists = (userid) => {
+  return new Promise((resolve, reject) => {
+    User.findByPk(userid)
+      .then((data) => {
+        console.log(data);
+        resolve(data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+module.exports = {
+  getUserByUsername,
+  getAllUsers,
+  updateProfile,
+  deletUserAccount,
+  checkRecordExists,
+};

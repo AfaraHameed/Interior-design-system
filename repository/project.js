@@ -11,5 +11,7 @@ const getProjectDetails = (projectid) => {
     }));
   });
 };
-
-module.exports = {getProjectDetails}
+const countProjects = ()=>{
+    return Project.count();
+}
+module.exports = {getProjectDetails,countProjects}

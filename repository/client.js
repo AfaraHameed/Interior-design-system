@@ -15,6 +15,10 @@ const addClient = (userid) => {
       });
   });
 };
+const countClients = ()=>{
+  return Client.count()
+}
+
 module.exports = {
-  addClient,
+  addClient,countClients
 };

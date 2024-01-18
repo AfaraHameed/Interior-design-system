@@ -7,4 +7,8 @@ const getDesignerId = (userid)=>{
     const response = designerRepository.getDesignerId(userid);
     return response
 }
-module.exports={addDesigner,getDesignerId}
+const countDesigners = ()=>{
+    const response = designerRepository.countDesigners();
+    return response
+}
+module.exports={addDesigner,getDesignerId,countDesigners}
