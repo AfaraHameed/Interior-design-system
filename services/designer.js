@@ -3,4 +3,8 @@ const addDesigner= (userid)=>{
     const response = designerRepository.addDesigner(userid)
     return response
 }
-module.exports={addDesigner}
+const getDesignerId = (userid)=>{
+    const response = designerRepository.getDesignerId(userid);
+    return response
+}
+module.exports={addDesigner,getDesignerId}
