@@ -12,5 +12,10 @@ router.patch(
   "/proposal/:id/status",
   [verifyTokenHandler],
   clientController.changeProposalStatus
-); //status value will give as query parameter if client accept query parameter value will be 'accept' 
+); //status value will give as query parameter if client accept query parameter value will be 'accept'
+router.get(
+  "/portfolio",
+  [verifyTokenHandler],
+  clientController.getPortfolio
+);
 module.exports = router;

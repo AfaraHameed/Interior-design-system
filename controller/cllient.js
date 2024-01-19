@@ -3,6 +3,7 @@ const userService = require("../services/user");
 const FAQService = require("../services/FAQ");
 const asyncHandler = require("../middlewares/asyncHandler");
 const ErrorResponse = require("../util/errorResponse");
+const portfolioService = require("../services/portfolio")
 const { AsyncQueueError } = require("sequelize");
 const getFAQ = asyncHandler(async (req, res) => {
   const faqs = await FAQService.getFAQ();
@@ -20,7 +21,7 @@ const changeProposalStatus = asyncHandler(async (req, res, next) => {
   const newStatus = req.query.status;
   const proposalId = req.params.id;
   console.log(newStatus,proposalId);
-  const statusUpdate = await projectService.changeProposalStatus(
+  const statusUpdate = await portfolioService.changeProposalStatus(
     proposalId,
     newStatus
   );
@@ -33,4 +34,11 @@ const changeProposalStatus = asyncHandler(async (req, res, next) => {
       });
   else next(new ErrorResponse("Failed to update", 400));
 });
-module.exports = { getFAQ, getProposal, changeProposalStatus };
+const getPortfolio = asyncHandler(async(req,res,next)=>{
+  const designerId = req.query.designerid
+  console.log(designerId)
+  const portfolios= await portfolioService.getPortfolio(designerId)
+  if(portfolios) 
+  return res.status(200).json({success :true ,data:{portfolios:portfolios}})
+})
+module.exports = { getFAQ, getProposal, changeProposalStatus ,getPortfolio};

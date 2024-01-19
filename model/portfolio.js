@@ -28,6 +28,10 @@ const Portfolio = sequelize.define("portfolio", {
     type: DataTypes.INTEGER,
     unique:true,
     allowNull:false
+  },
+  designerid:{
+    type: DataTypes.INTEGER,
+    // unique:true
   }
 });
 Project.hasOne(Portfolio, { foreignKey:"projectid" });

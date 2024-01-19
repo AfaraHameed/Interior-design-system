@@ -109,10 +109,18 @@ const addDesignProposal = asyncHandler(async (req, res, next) => {
   } else next(new ErrorResponse("Error creating design proposal", 500));
 });
 const addPortfolio =asyncHandler(async(req,res,next) =>{
+  const designerid=req.userId
+  console.log(designerid);
   const{name,beforeImage,afterImage,description,projectid}=req.body
-  const created = await PortfolioService.addPortfolio(name,beforeImage,afterImage,description,projectid)
+  const created = await PortfolioService.addPortfolio(name,beforeImage,afterImage,description,projectid,designerid)
   if(created)
   res.status(201).json({success:true,data:{message:"portfolio created successfully",portfolio:created}})
+})
+const getPortfolio = asyncHandler(async(req,res,next)=>{
+  const designerid=req.query.designerid
+  const portfolios = await PortfolioService.getPortfolio(designerid)
+  if(portfolios)
+    res.status(200).json({success:true,data:{message:portfolios}})
 })
 module.exports = {
   getAllProjects,
@@ -123,5 +131,6 @@ module.exports = {
   getProjectDetails,
   getFAQ,
   addDesignProposal,
-  addPortfolio
+  addPortfolio,
+  getPortfolio
 };
