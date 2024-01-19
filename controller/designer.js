@@ -9,8 +9,10 @@ const getAllProjects = asyncHandler(async (req, res, next) => {
   const userId = req.userId;
   const designerid = await designerServices.getDesignerId(userId);
   const projects = await designerRepository.getAllProjects(designerid);
-
+if(projects)
   res.status(200).json({ success: true, data: { message: projects } });
+else
+next(new ErrorResponse(`No Projects found for this Designer`, 404));
 });
 const addTask = asyncHandler(async (req, res, next) => {
   const { projectId, taskName, description, status, dueDate } = req.body;

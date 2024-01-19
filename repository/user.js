@@ -62,10 +62,25 @@ const checkRecordExists = (userid) => {
       });
   });
 };
+const getRolesByUserId = (userid)=>{
+  console.log('userid',userid);
+  return new Promise((resolve,reject)=>{
+    const user = User.findOne({
+      where: { userid:userid },
+      attributes: ['role'], 
+    }).then((data)=>{
+      console.log(data);
+      resolve(data.dataValues.role)
+    }).catch((err)=>{
+      reject(err)
+    })
+  })
+}
 module.exports = {
   getUserByUsername,
   getAllUsers,
   updateProfile,
   deletUserAccount,
   checkRecordExists,
+  getRolesByUserId
 };
