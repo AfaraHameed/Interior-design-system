@@ -35,15 +35,37 @@ const updateProject = (projectid, proposalId) => {
   });
 };
 //const addProject = (req,res)
-const getProposal = (projectId)=>{
-    return new Promise((resolve,reject)=>{
-         Project.findOne({where:{id : projectId},include:[{ model:DesignProposal}]}).then((data)=>{
-           console.log(data);
-            resolve(data.designproposal)
-         }).catch((err)=>{
-            reject(err)
-         })
+const getProposal = (projectId) => {
+  return new Promise((resolve, reject) => {
+    Project.findOne({
+      where: { id: projectId },
+      include: [{ model: DesignProposal }],
     })
-    
-}
-module.exports = { getProjectDetails, countProjects, updateProject,getProposal };
+      .then((data) => {
+        console.log(data);
+        resolve(data.designproposal);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+const changeProposalStatus = (proposalId, newStatus) => {
+  return new Promise((resolve, reject) => {
+    DesignProposal.update({ status: newStatus }, { where: { proposalId: proposalId } })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+module.exports = {
+  getProjectDetails,
+  countProjects,
+  updateProject,
+  getProposal,
+  changeProposalStatus,
+};
