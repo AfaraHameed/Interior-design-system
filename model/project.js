@@ -1,6 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/orm");
 const User = require('../model/user')
+const {DesignProposal} = require('../model/designProposal')
 const Project = sequelize.define("project", {
     id: {
         type: DataTypes.INTEGER,
@@ -41,10 +42,15 @@ const Project = sequelize.define("project", {
     },
     clientId: {
       type: DataTypes.INTEGER,
-      // other attributes for userId
-      field: 'clientId', // specify the column name explicitly
+      field: 'clientId', 
     },
+    // proposal_id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true, // Allow null initially
+    // },
 });
+DesignProposal.hasOne(Project)
+Project.belongsTo(DesignProposal,{forignKey:'proposal_id'})
 
 module.exports = {
   Project,

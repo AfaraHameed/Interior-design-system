@@ -1,6 +1,7 @@
 const { Designer, DesignerProject } = require("../model/designer");
 const { Project } = require("../model/project");
 const { Task } = require("../model/task");
+const {DesignProposal} = require("../model/designProposal")
 const addDesigner = (userid) => {
   return new Promise(async (resolve, reject) => {
     Designer.create({
@@ -95,6 +96,17 @@ const updateProjectStatus = (projectId,status)=>{
 const countDesigners = ()=>{
   return Designer.count()
 }
+
+const addDesignProposal = (proposalText,attachment,status)=>{
+  return new Promise((resolve,reject)=>{
+    DesignProposal.create({proposalText,attachment,status}).then((data)=>{
+      console.log(data);
+      resolve(data.dataValues.proposalId)
+    }).catch((err)=>{
+      reject(err)
+    })
+  })
+}
 module.exports = {
   addDesigner,
   getAllProjects,
@@ -103,5 +115,6 @@ module.exports = {
   getTasks,
   updateTaskStatus,
   updateProjectStatus,
-  countDesigners
+  countDesigners,
+  addDesignProposal
 };

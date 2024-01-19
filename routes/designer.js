@@ -9,4 +9,5 @@ router.get('/projects/:projectId/tasks',[verifyTokenHandler],designerController.
 router.patch('/projects/:projectId/tasks/:taskId/status',[verifyTokenHandler],designerController.updateTaskStatus)
 router.get('/projects/:projectId',[verifyTokenHandler],designerController.getProjectDetails)
 router.get('/faq',[verifyTokenHandler],designerController.getFAQ)
+router.post('/designpropsal/:projectId',[verifyTokenHandler],designerController.addDesignProposal)
 module.exports=router
