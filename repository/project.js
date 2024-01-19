@@ -1,3 +1,4 @@
+const { DesignProposal } = require("../model/designProposal");
 const { Project } = require("../model/project");
 const { Task } = require("../model/task");
 
@@ -34,4 +35,15 @@ const updateProject = (projectid, proposalId) => {
   });
 };
 //const addProject = (req,res)
-module.exports = { getProjectDetails, countProjects, updateProject };
+const getProposal = (projectId)=>{
+    return new Promise((resolve,reject)=>{
+         Project.findOne({where:{id : projectId},include:[{ model:DesignProposal}]}).then((data)=>{
+           console.log(data);
+            resolve(data.designproposal)
+         }).catch((err)=>{
+            reject(err)
+         })
+    })
+    
+}
+module.exports = { getProjectDetails, countProjects, updateProject,getProposal };
