@@ -22,7 +22,7 @@ const verifyTokenHandler = async(req,res,next)=>{
 const verifyRole = (roles) => {
     return async (req, res, next) => {
       const userid = req.userId;
-      console.log('userid',userid);
+      console.log('req userid',userid);
       const userRoles = await getRolesByUserId(userid);
       let hasRole = false;
       

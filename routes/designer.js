@@ -10,6 +10,6 @@ router.patch('/projects/:projectId/tasks/:taskId/status',[verifyTokenHandler],de
 router.get('/projects/:projectId',[verifyTokenHandler],designerController.getProjectDetails)
 router.get('/faq',[verifyTokenHandler],designerController.getFAQ)
 router.post('/designpropsal/:projectId',[verifyTokenHandler],designerController.addDesignProposal)
-router.post('/portfolio/:designerid',[verifyTokenHandler],designerController.getPortfolio)
+router.post('/portfolio/:designerid',[verifyTokenHandler],designerController.addPortfolio)
 
 module.exports=router
