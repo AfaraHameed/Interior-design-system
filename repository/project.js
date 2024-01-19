@@ -62,10 +62,12 @@ const changeProposalStatus = (proposalId, newStatus) => {
       });
   });
 };
+
 module.exports = {
   getProjectDetails,
   countProjects,
   updateProject,
   getProposal,
   changeProposalStatus,
+  
 };

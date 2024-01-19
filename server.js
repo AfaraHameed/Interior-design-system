@@ -12,6 +12,7 @@ const Project = require('./model/project');
 const Client = require('./model/client')
 const Designer=require('./model/designer')
 const Task = require('./model/task')
+const Portfolio = require("./model/portfolio")
 // const DesignerProject=require('./model/designer')
 
 
