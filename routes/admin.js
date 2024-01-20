@@ -11,4 +11,6 @@ router.post('/project/assign_designer',[verifyTokenHandler,verifyRole('admin')],
 router.get('/user',[verifyTokenHandler,verifyRole('admin')],adminController.getAllUsers)
 router.get('/dashboard',[verifyTokenHandler,verifyRole('admin')],adminController.getAdminDashboardDetails)
 router.post('/faq',[verifyTokenHandler,verifyRole('admin')],adminController.addFAQ)
+router.post('/material',[verifyTokenHandler,verifyRole('admin')],adminController.addMaterial)
+
 module.exports=router 

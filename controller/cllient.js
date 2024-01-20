@@ -4,6 +4,7 @@ const FAQService = require("../services/FAQ");
 const asyncHandler = require("../middlewares/asyncHandler");
 const ErrorResponse = require("../util/errorResponse");
 const portfolioService = require("../services/portfolio")
+const BudgetService=require("../services/budget")
 const { AsyncQueueError } = require("sequelize");
 const getFAQ = asyncHandler(async (req, res) => {
   const faqs = await FAQService.getFAQ();
@@ -21,7 +22,7 @@ const changeProposalStatus = asyncHandler(async (req, res, next) => {
   const newStatus = req.query.status;
   const proposalId = req.params.id;
   console.log(newStatus,proposalId);
-  const statusUpdate = await portfolioService.changeProposalStatus(
+  const statusUpdate = await projectService.changeProposalStatus(
     proposalId,
     newStatus
   );
@@ -41,4 +42,17 @@ const getPortfolio = asyncHandler(async(req,res,next)=>{
   if(portfolios) 
   return res.status(200).json({success :true ,data:{portfolios:portfolios}})
 })
-module.exports = { getFAQ, getProposal, changeProposalStatus ,getPortfolio};
+const getProjectDetails = asyncHandler(async (req, res, next) => {
+  const id = req.params.projectId;
+  const details = await projectService.getProjectDetails(id);
+  if (details) {
+    res.status(200).json({ success: true, data: details });
+  } else next(new ErrorResponse("No Details Found", 404));
+});
+const getBudget= (asyncHandler(async(req,res,next)=>{
+   const projectid = req.params.projectid
+   const budget = await BudgetService.getBudget(projectid)
+   if(budget.length>0)
+   res.status(200).json({success:true,data:{message:budget}})
+}))
+module.exports = { getFAQ, getProposal, changeProposalStatus ,getPortfolio,getProjectDetails,getBudget};

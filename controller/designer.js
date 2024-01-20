@@ -3,16 +3,17 @@ const designerRepository = require("../repository/designer");
 const designerServices = require("../services/designer");
 const projectService = require("../services/project");
 const FAQService = require("../services/FAQ");
+const BudgetService = require("../services/budget");
 const ErrorResponse = require("../util/errorResponse");
-const PortfolioService = require('../services/portfolio');
+const PortfolioService = require("../services/portfolio");
+const MaterialService = require("../services/material");
 const getAllProjects = asyncHandler(async (req, res, next) => {
   const userId = req.userId;
   const designerid = await designerServices.getDesignerId(userId);
   const projects = await designerRepository.getAllProjects(designerid);
-if(projects)
-  res.status(200).json({ success: true, data: { message: projects } });
-else
-next(new ErrorResponse(`No Projects found for this Designer`, 404));
+  if (projects)
+    res.status(200).json({ success: true, data: { message: projects } });
+  else next(new ErrorResponse(`No Projects found for this Designer`, 404));
 });
 const addTask = asyncHandler(async (req, res, next) => {
   const { projectId, taskName, description, status, dueDate } = req.body;
@@ -46,7 +47,7 @@ const updateTaskStatus = asyncHandler(async (req, res, next) => {
   const projectId = req.params.projectId;
   const taskId = req.params.taskId;
   const statusToUpdate = req.body.status;
-  let updated = await designerRepository.updateTaskStatus(
+  const updated = await designerRepository.updateTaskStatus(
     statusToUpdate,
     taskId,
     projectId
@@ -102,28 +103,50 @@ const addDesignProposal = asyncHandler(async (req, res, next) => {
   if (proposal) {
     console.log(proposal);
     const updated = await projectService.updateProject(projectId, proposal);
-    res
-      .status(201)
-      .json({
-        successs: true,
-        data: { message: "Design proposal created successfully" },
-      });
+    res.status(201).json({
+      successs: true,
+      data: { message: "Design proposal created successfully" },
+    });
   } else next(new ErrorResponse("Error creating design proposal", 500));
 });
-const addPortfolio =asyncHandler(async(req,res,next) =>{
-  const designerid=req.userId
+const addPortfolio = asyncHandler(async (req, res, next) => {
+  const designerid = req.userId;
   console.log(designerid);
-  const{name,beforeImage,afterImage,description,projectid}=req.body
-  const created = await PortfolioService.addPortfolio(name,beforeImage,afterImage,description,projectid,designerid)
-  if(created)
-  res.status(201).json({success:true,data:{message:"portfolio created successfully",portfolio:created}})
-})
-const getPortfolio = asyncHandler(async(req,res,next)=>{
-  const designerid=req.query.designerid
-  const portfolios = await PortfolioService.getPortfolio(designerid)
-  if(portfolios)
-    res.status(200).json({success:true,data:{message:portfolios}})
-})
+  const { name, beforeImage, afterImage, description, projectid } = req.body;
+  const created = await PortfolioService.addPortfolio(
+    name,
+    beforeImage,
+    afterImage,
+    description,
+    projectid,
+    designerid
+  );
+  if (created)
+    res.status(201).json({
+      success: true,
+      data: { message: "portfolio created successfully", portfolio: created },
+    });
+});
+const getPortfolio = asyncHandler(async (req, res, next) => {
+  const designerid = req.query.designerid;
+  const portfolios = await PortfolioService.getPortfolio(designerid);
+  if (portfolios)
+    res.status(200).json({ success: true, data: { message: portfolios } });
+});
+const addBudgetToMaterial = asyncHandler(async (req, res) => {
+  const projectid = req.params.projectid;
+  const { allocatedAmount, materialid } = req.body;
+  console.log(projectid,allocatedAmount,materialid)
+  const addBudget = await BudgetService.addBudgetToMaterial(
+    allocatedAmount,
+    projectid,
+    materialid
+  );
+  if(addBudget)
+  res.status(200).json({success:true,message:"Budget allocated successfully",data:addBudget})
+else
+next(new ErrorResponse("Failed to add budget",400))
+});
 module.exports = {
   getAllProjects,
   addTask,
@@ -134,5 +157,6 @@ module.exports = {
   getFAQ,
   addDesignProposal,
   addPortfolio,
-  getPortfolio
+  getPortfolio,
+  addBudgetToMaterial,
 };

@@ -18,4 +18,6 @@ router.get(
   [verifyTokenHandler],
   clientController.getPortfolio
 );
+router.get('/projects/:projectId',[verifyTokenHandler],clientController.getProjectDetails)
+router.get('/projects/:projectid/budgets',[verifyTokenHandler],clientController.getBudget)
 module.exports = router;

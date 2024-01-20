@@ -6,6 +6,7 @@ const designService = require("../services/designer");
 const projectService = require("../services/project")
 const userService = require("../services/user")
 const FAQService = require("../services/FAQ")
+const MaterialService = require("../services/material")
 const ErrorResponse = require("../util/errorResponse");
 const createUserByAdmin = asyncHandler(async (req, res, next) => {
   const {
@@ -118,6 +119,18 @@ const addFAQ = asyncHandler(async(req,res)=>{
   const faq = await FAQService.addFAQ(question, answer)
   res.status(201).json({success:true,data:faq})
 })
+const addMaterial = asyncHandler(async(req,res)=>{
+  const {
+    name,description
+  }=req.body
+  const material = await MaterialService.addMaterial(name,description)
+  if(material){
+    res.status(201).json({success:true,data:{message:"material created succesfully"}})
+  }
+  else
+  next(new ErrorResponse("Error creating the material",500))
+})
+
 module.exports = {
   createUserByAdmin,
   addProject,
@@ -126,5 +139,6 @@ module.exports = {
   getAllUsers,
   getAdminDashboardDetails,
   deletUserAccount,
-  addFAQ
+  addFAQ,
+  addMaterial
 };

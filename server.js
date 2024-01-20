@@ -13,6 +13,8 @@ const Client = require('./model/client')
 const Designer=require('./model/designer')
 const Task = require('./model/task')
 const Portfolio = require("./model/portfolio")
+const Material = require("./model/material_service")
+const Budget = require('./model/budget')
 // const DesignerProject=require('./model/designer')
 
 
