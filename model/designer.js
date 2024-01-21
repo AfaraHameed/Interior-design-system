@@ -16,8 +16,7 @@ const DesignerProject = sequelize.define(
   {
     designerId: { type: DataTypes.INTEGER, refereces: { model: Project } },
     projectId: { type: DataTypes.INTEGER, refereces: { model: Designer } },
-  },
-  { tableName: "designer_projects_new", timestamps: false }
+  }
 );
 Project.belongsToMany(Designer, {
   through: "DesignerProject",

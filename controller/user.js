@@ -7,12 +7,15 @@ const login = asyncHandler(async (req, res,next) => {
   const { username, password } = req.body;
   const user = await userRepository.getUserByUsername(username);
   if (!user) {
-    next(new ErrorResponse(`Invalid credential`), 400);
+    next(new ErrorResponse(`Invalid credential`, 401));
   } else {
     const isMatching = compareWithPassword(password, user.password);
     if (isMatching) {
       const token = createJwt(user.userid);
-      res.status(201).json({ message: "Login Successfully", data: user,token:token });
+      res.status(200).json({ message: "Login Successfully", data: user,token:token });
+    }
+    else{
+      next(new ErrorResponse(`Invalid credential`, 401));
     }
   }
 });

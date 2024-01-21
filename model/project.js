@@ -44,13 +44,14 @@ const Project = sequelize.define("project", {
       type: DataTypes.INTEGER,
       field: 'clientId', 
     },
-    // proposal_id: {
-    //   type: DataTypes.INTEGER,
-    //   allowNull: true, // Allow null initially
-    // },
+    proposalId: {
+      type: DataTypes.INTEGER,
+      allowNull: true, // Allow null initially
+      field:'proposalId'
+    },
 });
-DesignProposal.hasOne(Project)
-Project.belongsTo(DesignProposal,{forignKey:'proposal_id'})
+DesignProposal.hasOne(Project,{foreignKey:'proposalId'})
+Project.belongsTo(DesignProposal,{foreignKey:'proposalId'}) 
 
 module.exports = {
   Project,

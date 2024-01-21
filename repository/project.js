@@ -19,7 +19,7 @@ const countProjects = () => {
 const updateProject = (projectid, proposalId) => {
   return new Promise((resolve, reject) => {
     const updated = Project.update(
-      { designproposalProposalId: proposalId },
+      { proposalId: proposalId },
       {
         where: {
           id: projectid,
@@ -53,7 +53,10 @@ const getProposal = (projectId) => {
 
 const changeProposalStatus = (proposalId, newStatus) => {
   return new Promise((resolve, reject) => {
-    DesignProposal.update({ status: newStatus }, { where: { proposalId: proposalId } })
+    DesignProposal.update(
+      { status: newStatus },
+      { where: { proposalId: proposalId } }
+    )
       .then((data) => {
         resolve(data);
       })
@@ -62,12 +65,15 @@ const changeProposalStatus = (proposalId, newStatus) => {
       });
   });
 };
-
+const getTotalBudget = (projectId)=>{
+  const total_budget = Project.findOne({id:projectId,attributes:['budget']})
+  return total_budget
+}
 module.exports = {
   getProjectDetails,
   countProjects,
   updateProject,
   getProposal,
   changeProposalStatus,
-  
+  getTotalBudget
 };

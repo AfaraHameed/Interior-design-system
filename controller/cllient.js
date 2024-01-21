@@ -3,8 +3,9 @@ const userService = require("../services/user");
 const FAQService = require("../services/FAQ");
 const asyncHandler = require("../middlewares/asyncHandler");
 const ErrorResponse = require("../util/errorResponse");
-const portfolioService = require("../services/portfolio")
-const BudgetService=require("../services/budget")
+const portfolioService = require("../services/portfolio");
+const BudgetService = require("../services/budget");
+const ProjectService = require("../services/project");
 const { AsyncQueueError } = require("sequelize");
 const getFAQ = asyncHandler(async (req, res) => {
   const faqs = await FAQService.getFAQ();
@@ -21,27 +22,27 @@ const getProposal = asyncHandler(async (req, res, next) => {
 const changeProposalStatus = asyncHandler(async (req, res, next) => {
   const newStatus = req.query.status;
   const proposalId = req.params.id;
-  console.log(newStatus,proposalId);
+  console.log(newStatus, proposalId);
   const statusUpdate = await projectService.changeProposalStatus(
     proposalId,
     newStatus
   );
   if (statusUpdate)
-    res
-      .status(200)
-      .json({
-        success: true,
-        data: { message: `Proposal status changed to ${newStatus}` },
-      });
+    res.status(200).json({
+      success: true,
+      data: { message: `Proposal status changed to ${newStatus}` },
+    });
   else next(new ErrorResponse("Failed to update", 400));
 });
-const getPortfolio = asyncHandler(async(req,res,next)=>{
-  const designerId = req.query.designerid
-  console.log(designerId)
-  const portfolios= await portfolioService.getPortfolio(designerId)
-  if(portfolios) 
-  return res.status(200).json({success :true ,data:{portfolios:portfolios}})
-})
+const getPortfolio = asyncHandler(async (req, res, next) => {
+  const designerId = req.query.designerid;
+  console.log(designerId);
+  const portfolios = await portfolioService.getPortfolio(designerId);
+  if (portfolios)
+    return res
+      .status(200)
+      .json({ success: true, data: { portfolios: portfolios } });
+});
 const getProjectDetails = asyncHandler(async (req, res, next) => {
   const id = req.params.projectId;
   const details = await projectService.getProjectDetails(id);
@@ -49,10 +50,24 @@ const getProjectDetails = asyncHandler(async (req, res, next) => {
     res.status(200).json({ success: true, data: details });
   } else next(new ErrorResponse("No Details Found", 404));
 });
-const getBudget= (asyncHandler(async(req,res,next)=>{
-   const projectid = req.params.projectid
-   const budget = await BudgetService.getBudget(projectid)
-   if(budget.length>0)
-   res.status(200).json({success:true,data:{message:budget}})
-}))
-module.exports = { getFAQ, getProposal, changeProposalStatus ,getPortfolio,getProjectDetails,getBudget};
+const getBudget = asyncHandler(async (req, res, next) => {
+  const projectid = req.params.projectid;
+  const budget = await BudgetService.getBudget(projectid);
+  const totalbudget = await ProjectService.getTotalBudget(projectid);
+  balance_budget = totalbudget.budget - budget[1];
+  res
+    .status(200)
+    .json({
+      success: true,
+      data: { message: budget[0] },
+      balanceBudget: balance_budget,
+    });
+});
+module.exports = {
+  getFAQ,
+  getProposal,
+  changeProposalStatus,
+  getPortfolio,
+  getProjectDetails,
+  getBudget,
+};

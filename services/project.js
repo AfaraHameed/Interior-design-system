@@ -20,4 +20,9 @@ const changeProposalStatus = (proposalId,newStatus)=>{
     const response = projectRepository.changeProposalStatus(proposalId,newStatus)
     return response
 }
-module.exports = {getProjectDetails,countProjects,updateProject,getProposal,changeProposalStatus}
+
+const getTotalBudget = (projectid)=>{
+    const response = projectRepository.getTotalBudget(projectid)
+    return response
+  }
+module.exports = {getProjectDetails,countProjects,updateProject,getProposal,changeProposalStatus,getTotalBudget}

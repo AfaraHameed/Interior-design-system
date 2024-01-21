@@ -11,6 +11,7 @@ router.get('/projects/:projectId',[verifyTokenHandler],designerController.getPro
 router.get('/faq',[verifyTokenHandler],designerController.getFAQ)
 router.post('/designpropsal/:projectId',[verifyTokenHandler],designerController.addDesignProposal)
 router.post('/portfolio',[verifyTokenHandler],designerController.addPortfolio)
-router.post('/:projectid/material/budget',[verifyTokenHandler],designerController.addBudgetToMaterial)
+router.post('/projects/:projectid/material/budget',[verifyTokenHandler],designerController.addBudgetToMaterial)
+// router.post('/projects/:projectid/balance_budget',[verifyTokenHandler],designerController.getBalanceBudget)
 
 module.exports=router

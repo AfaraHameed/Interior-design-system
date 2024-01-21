@@ -3,6 +3,8 @@ const { Project } = require("../model/project");
 const { Designer } = require("../model/designer");
 const { DesignerProject } = require("../model/designer");
 const { hashPassword } = require("../util/passwordHelper");
+const { Model } = require("sequelize");
+const { DesignProposal } = require("../model/designProposal");
 const createUserByAdmin = (
   username,
   plainpassword,
@@ -67,27 +69,37 @@ const addProject = (
       });
   });
 };
-const assignDesignerToProject = (project_id, designer_id) => {
-  console.log(project_id, designer_id);
+const assignDesignerToProject = (projectId, designerId) => {
+  console.log(projectId, designerId);
   return new Promise(async (resolve, reject) => {
-    const project = await Project.findByPk(project_id);
-    const designer = await Designer.findByPk(designer_id);
-    console.log(project);
-    console.log(designer);
-    if (!project || !designer) {
-      reject("Either the project or the designer does not exist");
-    } else {
-      const created = project.addDesigner(designer, {
-        through: { selfGranted: false },
-      });
-      const result = Project.findByPk(project_id, { include: Designer });
-      resolve(result);
+    // const project = await Project.findByPk(project_id);
+    // const designer = await Designer.findByPk(designer_id);
+    // console.log(project);
+    // console.log(designer);
+    // if (!project || !designer) {
+    //   reject("Either the project or the designer does not exist");
+    // } 
+    // else {
+    //   const created = project.addDesigner(designer, {
+    //     through: { selfGranted: false },
+    //   });
+    // else{
+      const created = await DesignerProject.create({designerId,projectId}).then((data)=>{
+        resolve(data)
+      }).catch((err)=>{
+        reject(err)
+      })
+    //}
+      // const result = Project.findByPk(project_id, { include: Designer });
+      // resolve(result);
     }
-  });
+  );
 };
 const getAllProjects = (projectId) => {
   return new Promise((resolve,reject)=>{
-    Project.findAll({ })
+    Project.findAll({ include:[{model:DesignProposal,
+    attributes:['proposalText','attachment','status']
+    }]})
     .then((projects) => {
       resolve(projects);
     })

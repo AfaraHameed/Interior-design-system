@@ -38,7 +38,11 @@ const createUserByAdmin = asyncHandler(async (req, res, next) => {
   if (role == "designer") {
     await designService.addDesigner(user.userid);
   }
+  console.log('user',user);
+  if(user)
   return res.status(201).json({ success: true, message: user });
+else
+next(new ErrorResponse("failed creation"))
 });
 
 const addProject = asyncHandler(async (req, res, next) => {
@@ -80,10 +84,9 @@ const getProjects = asyncHandler(async(req, res,next) => {
 
 
 const assignDesignerToProject = asyncHandler(async (req, res) => {
-  const { project_id, designer_id } = req.body;
+  const { projectId, designerId } = req.body;
   const result = await adminRepository.assignDesignerToProject(
-    project_id,
-    designer_id
+    projectId, designerId
   );
   res.status(201).json({ success: true, data: { message: result } });
 });
