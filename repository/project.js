@@ -65,15 +65,18 @@ const changeProposalStatus = (proposalId, newStatus) => {
       });
   });
 };
-const getTotalBudget = (projectId)=>{
-  const total_budget = Project.findOne({id:projectId,attributes:['budget']})
-  return total_budget
-}
+const getTotalBudget = (projectId) => {
+  const total_budget = Project.findOne({
+    id: projectId,
+    attributes: ["budget"],
+  });
+  return total_budget;
+};
 module.exports = {
   getProjectDetails,
   countProjects,
   updateProject,
   getProposal,
   changeProposalStatus,
-  getTotalBudget
+  getTotalBudget,
 };

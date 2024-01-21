@@ -72,42 +72,32 @@ const addProject = (
 const assignDesignerToProject = (projectId, designerId) => {
   console.log(projectId, designerId);
   return new Promise(async (resolve, reject) => {
-    // const project = await Project.findByPk(project_id);
-    // const designer = await Designer.findByPk(designer_id);
-    // console.log(project);
-    // console.log(designer);
-    // if (!project || !designer) {
-    //   reject("Either the project or the designer does not exist");
-    // } 
-    // else {
-    //   const created = project.addDesigner(designer, {
-    //     through: { selfGranted: false },
-    //   });
-    // else{
-      const created = await DesignerProject.create({designerId,projectId}).then((data)=>{
-        resolve(data)
-      }).catch((err)=>{
-        reject(err)
+    const created = await DesignerProject.create({ designerId, projectId })
+      .then((data) => {
+        resolve(data);
       })
-    //}
-      // const result = Project.findByPk(project_id, { include: Designer });
-      // resolve(result);
-    }
-  );
+      .catch((err) => {
+        reject(err);
+      });
+  });
 };
 const getAllProjects = (projectId) => {
-  return new Promise((resolve,reject)=>{
-    Project.findAll({ include:[{model:DesignProposal,
-    attributes:['proposalText','attachment','status']
-    }]})
-    .then((projects) => {
-      resolve(projects);
+  return new Promise((resolve, reject) => {
+    Project.findAll({
+      include: [
+        {
+          model: DesignProposal,
+          attributes: ["proposalText", "attachment", "status"],
+        },
+      ],
     })
-    .catch((err) => {
-      reject(err);
-    });
-  })
-   
+      .then((projects) => {
+        resolve(projects);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
 };
 module.exports = {
   createUserByAdmin,
