@@ -9,3 +9,6 @@ const checkRecordExists = (userId)=>{
 }
 
 module.exports = {deletUserAccount,checkRecordExists}
+
+
+

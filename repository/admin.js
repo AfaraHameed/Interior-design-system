@@ -81,23 +81,67 @@ const assignDesignerToProject = (projectId, designerId) => {
       });
   });
 };
-const getAllProjects = (projectId) => {
-  return new Promise((resolve, reject) => {
-    Project.findAll({
+
+const getAllProjects = (doSort, doFilter, sortType, sortOrder, status) => {
+  if (doSort == true && doFilter == false) {
+    if (sortType && sortOrder) {
+      if (sortType == "budget" && sortOrder == "low_budget") {
+        const result = sortProject(["budget", "ASC"]);
+        if (result) return result;
+      } else if (sortType == "budget" && sortOrder == "high_budget") {
+        const result = sortProject(["budget", -1]);
+        if (result) return result;
+      } else if (sortType == "date" && sortOrder == "newest") {
+        const result = sortProject(["createdAt", -1]);
+        if (result) return result;
+      } else if (sortType == "date" && sortOrder == "oldest") {
+        const result = sortProject(["createdAt", -1]);
+        if (result) return result;
+      }
+    } else {
+      if (sortType) return "sortOrder_is_missing";
+      else if (sortOrder) return "sortType_is_missing";
+      else return "sortType_and_sortOrder_is_missing";
+    }
+  }
+  if (doSort == false && doFilter == true) {
+    const result = sortProjetByStatus({ status: status });
+    return result;
+  }
+};
+
+const sortProject = async (sortArray) => {
+  console.log(sortArray);
+  const result = await Project.findAll({
+    include: [
+      {
+        model: DesignProposal,
+        attributes: ["proposalText", "attachment", "status"],
+      },
+    ],
+    order: [sortArray],
+  });
+
+  console.log(result);
+  return result;
+};
+const sortProjetByStatus = async (sortArray) => {
+  console.log("sortArray", sortArray);
+  const result = await Project.findAll(
+    {
+      where: sortArray,
+    },
+    {
       include: [
         {
           model: DesignProposal,
           attributes: ["proposalText", "attachment", "status"],
         },
       ],
-    })
-      .then((projects) => {
-        resolve(projects);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
+    }
+  );
+  console.log(result);
+  return result;
 };
 module.exports = {
   createUserByAdmin,

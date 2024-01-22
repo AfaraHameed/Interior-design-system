@@ -72,8 +72,23 @@ const addProject = asyncHandler(async (req, res, next) => {
 
   return res.status(201).json({ success: true, data: { message: project } });
 });
+
+// const getProjects = asyncHandler(async(req, res,next) => {
+//   const projects = await adminRepository.getAllProjects()
+//   if(projects){
+//     res.status(200).json({success:true,data:{message:projects}})
+//   }
+//   else{
+//     next(new ErrorResponse("No projects found",404))
+//   }
+// });
+
 const getProjects = asyncHandler(async(req, res,next) => {
-  const projects = await adminRepository.getAllProjects()
+  let{doSort,doFilter,sortType,sortOrder,status} = req.query
+  doSort = doSort === "true" ? true : false;
+  doFilter = doFilter === "true" ? true : false;
+  // const filterStatus = req.query.status
+  const projects = await adminRepository.getAllProjects(doSort,doFilter,sortType,sortOrder,status)
   if(projects){
     res.status(200).json({success:true,data:{message:projects}})
   }
