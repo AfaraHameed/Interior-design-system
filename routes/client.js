@@ -20,4 +20,6 @@ router.get(
 );
 router.get('/projects/:projectId',[verifyTokenHandler],clientController.getProjectDetails)
 router.get('/projects/:projectid/budgets',[verifyTokenHandler],clientController.getBudget)
+router.post('/projects/:projectid/review',[verifyTokenHandler],clientController.addReviews)
+
 module.exports = router;

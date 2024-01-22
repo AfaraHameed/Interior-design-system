@@ -15,6 +15,7 @@ const Task = require('./model/task')
 const Portfolio = require("./model/portfolio")
 const Material = require("./model/material_service")
 const Budget = require('./model/budget')
+const Review = require('./model/review')
 // const DesignerProject=require('./model/designer')
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');

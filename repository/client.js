@@ -18,7 +18,20 @@ const addClient = (userid) => {
 const countClients = ()=>{
   return Client.count()
 }
+const getClientId = (userId) => {
+  console.log('userId',userId);
+  return new Promise((resolve, reject) => {
+    Client.findOne({ where: { userId } })
+      .then((data) => {
+       console.log(data.clientId);
+        resolve(data.clientId);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+};
 
 module.exports = {
-  addClient,countClients
+  addClient,countClients,getClientId
 };

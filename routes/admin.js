@@ -82,8 +82,7 @@ const { verifyTokenHandler,verifyRole } = require("../middlewares/jwtHandler");
  *           description: The district of the user.
  */
   
-//router.post('/user',[verifyTokenHandler,verifyRole('admin')],adminController.createUserByAdmin)
-router.post('/user',adminController.createUserByAdmin)
+router.post('/user',[verifyTokenHandler,verifyRole('admin')],adminController.createUserByAdmin)
 router.delete('/user/:id',[verifyTokenHandler,verifyRole('admin')],adminController.deletUserAccount)
 //router.route('/project',[verifyRole('admin')]).post(adminController.addProject).get(adminController.getProjects,)
 router.post('/project',[verifyTokenHandler,verifyRole('admin')],adminController.addProject)

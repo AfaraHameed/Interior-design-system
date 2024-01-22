@@ -7,4 +7,8 @@ const countClients = ()=>{
     const response=clientRepository.countClients()
     return response
 }
-module.exports={addClient,countClients}
+const getClientId = (userid)=>{
+    const response = clientRepository.getClientId(userid);
+    return response
+}
+module.exports={addClient,countClients,getClientId}

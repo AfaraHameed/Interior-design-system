@@ -22,7 +22,7 @@ sequelize
   .authenticate()
   .then(() => {
     sequelize
-      .sync()
+      .sync({alter:true})
       .then((data) => {
         console.log("model synced", data);
       })
