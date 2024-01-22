@@ -53,7 +53,7 @@ const updateTaskStatus = asyncHandler(async (req, res, next) => {
     projectId
   );
   if (updated) {
-    res.status(200).json({
+    res.status(202).json({
       success: true,
       data: {
         message: `task ${taskId}  of Project ${projectId} updated successfully`,
@@ -71,7 +71,7 @@ const updateProjectStatus = asyncHandler(async (req, res, next) => {
     status
   );
   if (updated) {
-    res.status(200).json({
+    res.status(202).json({
       success: true,
       message: `Poject ${projectId} updated succesfully`,
       updated_data: updated,
@@ -143,7 +143,7 @@ const addBudgetToMaterial = asyncHandler(async (req, res) => {
     materialid
   );
   if(addBudget)
-  res.status(200).json({success:true,message:"Budget allocated successfully",data:addBudget})
+  res.status(201).json({success:true,message:"Budget allocated successfully",data:addBudget})
 else
 next(new ErrorResponse("Failed to add budget",400))
 });

@@ -93,6 +93,7 @@ const getProjects = asyncHandler(async(req, res,next) => {
     res.status(200).json({success:true,data:{message:projects}})
   }
   else{
+    console.log(projects);
     next(new ErrorResponse("No projects found",404))
   }
 });
@@ -129,7 +130,7 @@ const deletUserAccount = asyncHandler(async(req,res,next)=>{
     return next(new ErrorResponse('The User does not exist',404))
   }
   const deleted = await userService.deletUserAccount(userId)
-    res.status(200).json({success:true,data:{message:`user ${userId} deleted successfully`}})
+    res.status(202).json({success:true,data:{message:`user ${userId} deleted successfully`}})
 })
 
 const addFAQ = asyncHandler(async(req,res)=>{

@@ -5,6 +5,8 @@ const { DesignerProject } = require("../model/designer");
 const { hashPassword } = require("../util/passwordHelper");
 const { Model } = require("sequelize");
 const { DesignProposal } = require("../model/designProposal");
+const ErrorResponse = require('../util/errorResponse');
+const { Client } = require("../model/client");
 const createUserByAdmin = (
   username,
   plainpassword,
@@ -89,30 +91,48 @@ const getAllProjects = (doSort, doFilter, sortType, sortOrder, status) => {
         const result = sortProject(["budget", "ASC"]);
         if (result) return result;
       } else if (sortType == "budget" && sortOrder == "high_budget") {
-        const result = sortProject(["budget", -1]);
+        const result = sortProject(["budget", "DESC"]);
         if (result) return result;
       } else if (sortType == "date" && sortOrder == "newest") {
-        const result = sortProject(["createdAt", -1]);
+        const result = sortProject(["createdAt", "DESC"]);
         if (result) return result;
       } else if (sortType == "date" && sortOrder == "oldest") {
-        const result = sortProject(["createdAt", -1]);
+        const result = sortProject(["createdAt", "ASC"]);
         if (result) return result;
       }
     } else {
-      if (sortType) return "sortOrder_is_missing";
-      else if (sortOrder) return "sortType_is_missing";
-      else return "sortType_and_sortOrder_is_missing";
+       throw new Error( "sortOrder_is_missing");
+      
     }
   }
-  if (doSort == false && doFilter == true) {
+  else if (doSort == false && doFilter == true) {
     const result = sortProjetByStatus({ status: status });
     return result;
+  }
+  else if(doSort == true && doFilter == true){
+
+    if (sortType && sortOrder&&status) {
+      if (sortType == "budget" && sortOrder == "low_budget") {
+        const result = sortAndFilterProject (["budget", "ASC"],{ status: status });
+        if (result) return result;
+      } else if (sortType == "budget" && sortOrder == "high_budget") {
+        const result = sortAndFilterProject (["budget", "DESC"],{ status: status });
+        if (result) return result;
+      } else if (sortType == "date" && sortOrder == "newest") {
+        const result = sortAndFilterProject (["createdAt", "DESC"],{ status: status });
+        if (result) return result;
+      } else if (sortType == "date" && sortOrder == "oldest") {
+        const result = sortAndFilterProject (["createdAt", "ASC"],{ status: status });
+        if (result) return result;
+      }
+    } 
   }
 };
 
 const sortProject = async (sortArray) => {
   console.log(sortArray);
   const result = await Project.findAll({
+    attributes: ["id", "projectName", "status","budget"],
     include: [
       {
         model: DesignProposal,
@@ -125,11 +145,11 @@ const sortProject = async (sortArray) => {
   console.log(result);
   return result;
 };
-const sortProjetByStatus = async (sortArray) => {
-  console.log("sortArray", sortArray);
-  const result = await Project.findAll(
-    {
-      where: sortArray,
+const sortProjetByStatus = async (sortObject) => {
+  //console.log("sortArray", sortArray);
+  const result = await Project.findAll({
+    attributes: ["id", "projectName", "status","budget"],
+      where: sortObject,
     },
     {
       include: [
@@ -138,6 +158,24 @@ const sortProjetByStatus = async (sortArray) => {
           attributes: ["proposalText", "attachment", "status"],
         },
       ],
+    }
+  );
+  console.log(result);
+  return result;
+};
+
+const sortAndFilterProject = async (sortObject,sortArray) => {
+  console.log("sortArray", sortArray);
+  const result = await Project.findAll(
+    {
+      where: sortObject,
+      include: [
+        {
+          model: DesignProposal,
+          attributes: ["proposalText", "attachment", "status"],
+        },
+      ],
+      order: [sortArray],
     }
   );
   console.log(result);

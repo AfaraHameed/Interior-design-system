@@ -28,7 +28,7 @@ const changeProposalStatus = asyncHandler(async (req, res, next) => {
     newStatus
   );
   if (statusUpdate)
-    res.status(200).json({
+    res.status(202).json({
       success: true,
       data: { message: `Proposal status changed to ${newStatus}` },
     });
