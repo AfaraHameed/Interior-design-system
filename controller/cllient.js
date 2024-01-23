@@ -6,9 +6,9 @@ const ErrorResponse = require("../util/errorResponse");
 const portfolioService = require("../services/portfolio");
 const BudgetService = require("../services/budget");
 const ProjectService = require("../services/project");
-const ClientService = require('../services/client')
+const ClientService = require("../services/client");
 const { AsyncQueueError } = require("sequelize");
-const ReviewService = require('../services/review')
+const ReviewService = require("../services/review");
 const getFAQ = asyncHandler(async (req, res) => {
   const faqs = await FAQService.getFAQ();
   if (faqs) res.status(200).json({ success: true, data: faqs });
@@ -57,23 +57,34 @@ const getBudget = asyncHandler(async (req, res, next) => {
   const budget = await BudgetService.getBudget(projectid);
   const totalbudget = await ProjectService.getTotalBudget(projectid);
   balance_budget = totalbudget.budget - budget[1];
-  res
-    .status(200)
-    .json({
-      success: true,
-      data: { message: budget[0] },
-      balanceBudget: balance_budget,
-    });
+  res.status(200).json({
+    success: true,
+    data: { message: budget[0] },
+    balanceBudget: balance_budget,
+  });
 });
-const addReviews = asyncHandler(async(req,res,next)=>{
-  const projectId = req.params.projectid
-  const {description,ratings} = req.body
-  const clientId = await ClientService.getClientId(req.userId)
-  console.log(clientId);
-  const created = await ReviewService.addReviews(projectId,clientId,description,ratings)
-  if(created)
-  res.status(201).json({success:true,message:"Review added successfully",data:created})
-})
+const addReviews = asyncHandler(async (req, res, next) => {
+  const projectId = req.params.projectid;
+  const { description, ratings } = req.body;
+  const userId = req.userId
+  console.log(userId);
+  const created = await ReviewService.addReviews(
+    projectId,
+    userId,
+    description,
+    ratings
+  );
+  if (created)
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "Review added successfully",
+        data: created,
+      });
+});
+
+
 module.exports = {
   getFAQ,
   getProposal,
@@ -82,4 +93,5 @@ module.exports = {
   getProjectDetails,
   getBudget,
   addReviews,
+  
 };

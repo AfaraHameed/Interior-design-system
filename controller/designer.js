@@ -4,6 +4,7 @@ const designerServices = require("../services/designer");
 const projectService = require("../services/project");
 const FAQService = require("../services/FAQ");
 const BudgetService = require("../services/budget");
+const ReviewService=require('../services/review')
 const ErrorResponse = require("../util/errorResponse");
 const PortfolioService = require("../services/portfolio");
 const MaterialService = require("../services/material");
@@ -147,6 +148,12 @@ const addBudgetToMaterial = asyncHandler(async (req, res) => {
 else
 next(new ErrorResponse("Failed to add budget",400))
 });
+const getReviews = asyncHandler(async(req,res,next)=>{
+  const projectid = req.params.projectid
+  const reviews = await ReviewService.getReviews(projectid)
+  if(reviews)
+  res.status(200).json({success:true,data:reviews})
+})
 module.exports = {
   getAllProjects,
   addTask,
@@ -159,4 +166,5 @@ module.exports = {
   addPortfolio,
   getPortfolio,
   addBudgetToMaterial,
+  getReviews
 };

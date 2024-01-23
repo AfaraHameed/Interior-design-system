@@ -1,7 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../config/orm");
 const { Project } = require("./project");
-const {Client} = require('../model/client')
+const {User} = require('../model/user')
 const Review = sequelize.define("review", {
   reviewId: {
     type: DataTypes.INTEGER,
@@ -13,7 +13,7 @@ const Review = sequelize.define("review", {
   projectId: {
     type: DataTypes.INTEGER,
   },
-  clientId: {
+  userId: {
     type: DataTypes.INTEGER,
   },
   description: {
@@ -24,11 +24,11 @@ const Review = sequelize.define("review", {
   },
 });
 Project.hasMany(Review, { foreignKey: "projectId", as: "project" });
-Review.belongsTo(Project, { foreignKey: "projectId", as: "reviews" });
+Review.belongsTo(Project, { foreignKey: "projectId", as: "project" });
 
-Client.hasMany(Review, { foreignKey: "clientId", as: "client" });
-Review.belongsTo(Client, { foreignKey: "clientId", as: "review" });
-
+User.hasMany(Review, { foreignKey: "userId", as: "user" });
+Review.belongsTo(User, { foreignKey: "userId", as: "user" });
+ 
 module.exports = {
     Review,
   };
